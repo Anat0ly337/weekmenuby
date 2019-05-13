@@ -76,5 +76,5 @@ public class RoleTest {
                 .collect(Collectors.toList());
         assertTrue(messages.contains("role must have name"));
     }
-    
+
 }
