@@ -1,11 +1,10 @@
 package by.weekmenu.domain;
 
-;
+
 import org.apache.commons.lang3.StringUtils;
 import org.junit.After;
 import org.junit.BeforeClass;
 import org.junit.Test;
-
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
 import javax.validation.Validator;
@@ -14,7 +13,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
-
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
@@ -25,6 +23,8 @@ public class UserTest {
     private Role role = new Role("USER");
     private Account account = new Account(4, "IEEQWDS");
     private Set<UserAddress> userAdress = new HashSet<>();
+    private User user = new User("21313", "123123", "312213", "312121", role, account, userAdress, (long) 321312123);
+
 
     @BeforeClass
     public static void setUpValidator() {
@@ -33,21 +33,14 @@ public class UserTest {
     }
 
 
-    User user = new User("21313", "123123", "312213", "312121", role, account, userAdress, (long) 321312123);
-
     @Test
-    public void test_UserIsValid() {
-
-
+    public void testUserIsValid() {
         Set<ConstraintViolation<User>> constraintViolations = validator.validate(user);
         assertEquals("Expected size of the ConstraintViolation should be without exceptions:", 0, constraintViolations.size());
-
     }
 
     @Test
     public void test_invalidPasswordeLessThan() {
-
-
         user.setPassword("23");
         Set<ConstraintViolation<User>> constraintViolations = validator.validate(user);
         assertEquals("must be between 3 and 255", constraintViolations.iterator().next().getMessage());
@@ -57,45 +50,34 @@ public class UserTest {
 
     @Test
     public void test_invalidPasswordeMoreThan() {
-
         String str = StringUtils.repeat("12345678", 35);
         user.setPassword(str);
         Set<ConstraintViolation<User>> constraintViolations = validator.validate(user);
         assertEquals("must be between 3 and 255", constraintViolations.iterator().next().getMessage());
         assertEquals("Expected size of the ConstraintViolation should be 1", 1, constraintViolations.size());
-
     }
 
     @Test
     public void test_invalidBlankPassword() {
-
         user.setPassword("  ");
-
         Set<ConstraintViolation<User>> constraintViolations = validator.validate(user);
         List<String> messages = constraintViolations.stream()
                 .map((ConstraintViolation<User> violation) -> violation.getMessage())
                 .collect(Collectors.toList());
         assertTrue(messages.contains("must have password"));
         assertEquals("Expected size of the ConstraintViolation should be 1", 1, constraintViolations.size());
-
     }
 
     @Test
-    public void test_invalidNullPassword() {
-
+    public void testInvalidNullPassword() {
         user.setPassword(null);
-
         Set<ConstraintViolation<User>> constraintViolations = validator.validate(user);
         assertEquals("must have password", constraintViolations.iterator().next().getMessage());
         assertEquals("Expected size of the ConstraintViolation should be 1", 1, constraintViolations.size());
-
-
     }
 
     @Test
-    public void test_invalidLastNameLessThan() {
-
-
+    public void testInvalidLastNameLessThan() {
         user.setLastName("s");
         Set<ConstraintViolation<User>> constraintViolations = validator.validate(user);
         assertEquals("must be between 3 and 255", constraintViolations.iterator().next().getMessage());
@@ -105,71 +87,54 @@ public class UserTest {
     }
 
     @Test
-    public void test_invalidLastNameMoreThan() {
-
+    public void testInvalidLastNameMoreThan() {
         String str = StringUtils.repeat("12345678", 35);
         user.setLastName(str);
         Set<ConstraintViolation<User>> constraintViolations = validator.validate(user);
         assertEquals("must be between 3 and 255", constraintViolations.iterator().next().getMessage());
         assertEquals("Expected size of the ConstraintViolation should be 1", 1, constraintViolations.size());
-
-
     }
 
     @Test
-    public void test_invalidBlankLastName() {
-
+    public void testInvalidBlankLastName() {
         user.setLastName("  ");
-
         Set<ConstraintViolation<User>> constraintViolations = validator.validate(user);
         List<String> messages = constraintViolations.stream()
                 .map((ConstraintViolation<User> violation) -> violation.getMessage())
                 .collect(Collectors.toList());
         assertTrue(messages.contains("must have lastname"));
         assertEquals("Expected size of the ConstraintViolation should be 1", 1, constraintViolations.size());
-
     }
 
     @Test
-    public void test_invalidNullLastName() {
-
+    public void testInvalidNullLastName() {
         user.setLastName(null);
-
         Set<ConstraintViolation<User>> constraintViolations = validator.validate(user);
         assertEquals("must have lastname", constraintViolations.iterator().next().getMessage());
         assertEquals("Expected size of the ConstraintViolation should be 1", 1, constraintViolations.size());
-
-
     }
 
     @Test
-    public void test_invalidUsernameLessThan() {
-
-
+    public void testInvalidUsernameLessThan() {
         user.setUsername("sa");
         Set<ConstraintViolation<User>> constraintViolations = validator.validate(user);
         assertEquals("must be between 3 and 20", constraintViolations.iterator().next().getMessage());
         assertEquals("Expected size of the ConstraintViolation should be 1", 1, constraintViolations.size());
-
     }
 
 
         @Test
-        public void test_invalidUserNameMoreThan() {
-
+        public void testInvalidUserNameMoreThan() {
             String str = StringUtils.repeat("12345678", 35);
             user.setUsername(str);
             Set<ConstraintViolation<User>> constraintViolations = validator.validate(user);
             assertEquals("must be between 3 and 20", constraintViolations.iterator().next().getMessage());
             assertEquals("Expected size of the ConstraintViolation should be 1", 1, constraintViolations.size());
-
-
         }
 
 
     @Test
-    public void test_blankName() {
-
+    public void testBlankName() {
         user.setUsername("");
         Set<ConstraintViolation<User>> constraintViolations = validator.validate(user);
         List<String> messages = constraintViolations.stream()
@@ -177,12 +142,10 @@ public class UserTest {
                 .collect(Collectors.toList());
         assertTrue(messages.contains("must have name"));
         assertEquals("Expected size of the ConstraintViolation should be 1", 1, constraintViolations.size());
-
     }
 
     @Test
-    public void test_NullName() {
-
+    public void testNullName() {
         user.setUsername(null);
         Set<ConstraintViolation<User>> constraintViolations = validator.validate(user);
         List<String> messages = constraintViolations.stream()
@@ -190,34 +153,28 @@ public class UserTest {
                 .collect(Collectors.toList());
         assertTrue(messages.contains("must have name"));
         assertEquals("Expected size of the ConstraintViolation should be 1", 1, constraintViolations.size());
-
     }
 
     @Test
-    public void test_invalidFirstNameMoreThan() {
-
+    public void testInvalidFirstNameMoreThan() {
         String str = StringUtils.repeat("12345678", 35);
         user.setFirstName(str);
         Set<ConstraintViolation<User>> constraintViolations = validator.validate(user);
         assertEquals("must be between 3 and 20", constraintViolations.iterator().next().getMessage());
-
-
     }
-    @Test
-    public void test_invalidFirstNameLessThan() {
 
+    @Test
+    public void testInvalidFirstNameLessThan() {
         String str = StringUtils.repeat("12345678", 35);
         user.setFirstName(str);
         Set<ConstraintViolation<User>> constraintViolations = validator.validate(user);
         assertEquals("must be between 3 and 20", constraintViolations.iterator().next().getMessage());
         assertEquals("Expected size of the ConstraintViolation should be 1", 1, constraintViolations.size());
-
-
     }
 
 
     @Test
-    public void test_blankFirstName() {
+    public void testBlankFirstName() {
 
         user.setFirstName("");
         Set<ConstraintViolation<User>> constraintViolations = validator.validate(user);
@@ -230,8 +187,7 @@ public class UserTest {
     }
 
     @Test
-    public void test_emptyFirstName() {
-
+    public void testEmptyFirstName() {
         user.setFirstName("  ");
         Set<ConstraintViolation<User>> constraintViolations = validator.validate(user);
         List<String> messages = constraintViolations.stream()
@@ -239,12 +195,10 @@ public class UserTest {
                 .collect(Collectors.toList());
         assertTrue(messages.contains("must have firstname"));
         assertEquals("Expected size of the ConstraintViolation should be 1", 1, constraintViolations.size());
-
     }
 
     @Test
-    public void test_NullFirstName() {
-
+    public void testNullFirstName() {
         user.setFirstName(null);
         Set<ConstraintViolation<User>> constraintViolations = validator.validate(user);
         List<String> messages = constraintViolations.stream()
@@ -252,13 +206,12 @@ public class UserTest {
                 .collect(Collectors.toList());
         assertTrue(messages.contains("must have firstname"));
         assertEquals("Expected size of the ConstraintViolation should be 1", 1, constraintViolations.size());
-
     }
 
 
-   /* @After
+    @After
     public void tearDown() {
         validatorFactory.close();
-    }*/
+    }
 
 }

@@ -2,11 +2,9 @@ package by.weekmenu.domain;
 
 import javax.persistence.*;
 import java.io.Serializable;
-
 @Entity
 @Table(name = "USER_MENU")
 public class UserMenu implements Serializable{
-
 
     private static final long serialVersionUID = -356731286677781913L;
 
@@ -15,7 +13,6 @@ public class UserMenu implements Serializable{
 
     @Embeddable
     public static class Id implements Serializable {
-
 
         @Column(name = "user_id")
         private User user;

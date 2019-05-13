@@ -18,32 +18,26 @@ import static org.junit.Assert.assertTrue;
 
 public class RoleTest {
 
-
-
     private static Validator validator;
     private static ValidatorFactory validatorFactory;
-
+    private Role role = new Role("USER", createUsers());
+    private Account account = new Account(4, "IEEQWDS");
+    private Set<UserAddress> userAdress = new HashSet<>();
 
     @BeforeClass
     public static void setUpValidator() {
         ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
         validator = factory.getValidator();
     }
+
     public Set<User> createUsers() {
         Account account = new Account(4, "IEEQWDS");
         Set<UserAddress> userAdress = new HashSet<>();
         User user = new User("123", "123", "123", "123", new Role("ssss"), account, userAdress, (long) 22223222);
         Set<User> users = new HashSet<>();
         users.add(user);
-
         return users;
     }
-    private Role role = new Role("USER", createUsers());
-    private Account account = new Account(4, "IEEQWDS");
-    private Set<UserAddress> userAdress = new HashSet<>();
-
-
-
 
     @Test
     public void test_valid() {
@@ -53,10 +47,8 @@ public class RoleTest {
 
     }
 
-
     @Test
     public void test_NullRole() {
-
        role.setName(null);
         Set<ConstraintViolation<Role>> constraintViolations = validator.validate(role);
         List<String> messages = constraintViolations.stream()
@@ -64,9 +56,9 @@ public class RoleTest {
                 .collect(Collectors.toList());
         assertTrue(messages.contains("role must have name"));
     }
+
     @Test
     public void test_EmptyRole() {
-
         role.setName("  ");
         Set<ConstraintViolation<Role>> constraintViolations = validator.validate(role);
         List<String> messages = constraintViolations.stream()
@@ -77,7 +69,6 @@ public class RoleTest {
 
     @Test
     public void test_BlankRole() {
-
         role.setName("");
         Set<ConstraintViolation<Role>> constraintViolations = validator.validate(role);
         List<String> messages = constraintViolations.stream()
@@ -85,8 +76,5 @@ public class RoleTest {
                 .collect(Collectors.toList());
         assertTrue(messages.contains("role must have name"));
     }
-
-
-
-
+    
 }

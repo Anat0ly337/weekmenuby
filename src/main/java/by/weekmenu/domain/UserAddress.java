@@ -1,5 +1,6 @@
 package by.weekmenu.domain;
 
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -16,10 +17,11 @@ import java.io.Serializable;
 @Getter
 @Setter
 @NoArgsConstructor
+@EqualsAndHashCode(exclude = "id")
 public class UserAddress implements Serializable {
 
-
     private static final long serialVersionUID = -1190916645592974938L;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID")
@@ -28,7 +30,6 @@ public class UserAddress implements Serializable {
     @Column(name = "DISTRICT")
     @Size(max = 20, message = "must be between 3 and 20")
     private String district;
-
 
     @Size(max = 20, message = "must be between 3 and 20")
     @Column(name = "REGION")
@@ -50,10 +51,8 @@ public class UserAddress implements Serializable {
     @Column(name = "FLOOR")
     private Integer floor;
 
-
     @Column(name = "FLAT")
     private String flat;
-
 
     @Column(name = "COMMENT")
     @Size(min = 0, max = 1000, message = "more than 1000")
@@ -63,8 +62,6 @@ public class UserAddress implements Serializable {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "USER_ADDRESS_ID")
     private User user;
-
-
 
     public UserAddress(String district,String region,String city,String house, String porch,  Integer floor, String flat, String comment,  User user) {
         this.district = district;

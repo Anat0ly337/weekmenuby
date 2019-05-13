@@ -1,17 +1,16 @@
 package by.weekmenu.domain;
 
 
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-
 import javax.persistence.*;
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-
 import javax.validation.constraints.PositiveOrZero;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
@@ -24,9 +23,9 @@ import java.util.Set;
 @Table(name = "USER")
 @Getter
 @Setter
+@EqualsAndHashCode(exclude = "id")
 @NoArgsConstructor
 public class User implements UserDetails, Serializable {
-
 
     private static final long serialVersionUID = -7053215824343088953L;
     @Id
@@ -67,16 +66,12 @@ public class User implements UserDetails, Serializable {
     @JoinColumn(name = "ACCOUNT_ID")
     private Account account;
 
-
-
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Set<UserAddress> userAdress;
-
 
     @PositiveOrZero(message = "positive or zero")
     @Column(name = "MOBILEPHONE")
     private Long mobilephone;
-
 
     public User(String username,String password,String firstName,String lastName,Role role,Account account, Set<UserAddress> userAdress,Long mobilephone) {
         this.username = username;
@@ -95,7 +90,6 @@ public class User implements UserDetails, Serializable {
         roleList.add(role);
         return roleList;
     }
-
 
     @Override
     public String getPassword() {

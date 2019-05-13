@@ -1,15 +1,13 @@
 package by.weekmenu.domain;
 
 
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
-
 import javax.persistence.*;
-import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Set;
 
@@ -19,18 +17,18 @@ import java.util.Set;
 @Getter
 @Setter
 @NoArgsConstructor
+@EqualsAndHashCode(exclude = "id")
 public class Role implements GrantedAuthority, Serializable {
-
 
     private static final long serialVersionUID = 4448878283161219539L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID")
     private Long id;
+
     @NotBlank(message = "role must have name")
     @Column(name = "NAME")
     private String name;
-
 
     @OneToMany(mappedBy = "role",cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Set<User> userList;
@@ -43,10 +41,6 @@ public class Role implements GrantedAuthority, Serializable {
         this.name = name;
         this.userList = userList;
     }
-
-
-
-
 
     @Override
     public String getAuthority() {
